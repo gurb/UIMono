@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Components", "Components\Components.csproj", "{D2B2C37D-8F38-4D0D-A916-2087CC1A6AEF}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UIMono.Core", "Core\UIMono.Core.csproj", "{770E5ACD-F09B-458B-89FA-CC4BFCFC101D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UIMono.Core", "UIMono.Core\UIMono.Core.csproj", "{770E5ACD-F09B-458B-89FA-CC4BFCFC101D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UIMono.Test", "UIMono.Test\UIMono.Test.csproj", "{F8BDCA4B-F330-4C70-B172-0B93363E9DC8}"
 EndProject
@@ -15,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D2B2C37D-8F38-4D0D-A916-2087CC1A6AEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D2B2C37D-8F38-4D0D-A916-2087CC1A6AEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D2B2C37D-8F38-4D0D-A916-2087CC1A6AEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D2B2C37D-8F38-4D0D-A916-2087CC1A6AEF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{770E5ACD-F09B-458B-89FA-CC4BFCFC101D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{770E5ACD-F09B-458B-89FA-CC4BFCFC101D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{770E5ACD-F09B-458B-89FA-CC4BFCFC101D}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.IO;
+using UIMono.Core.Caretaker;
 
 namespace UIMono.Test
 {
@@ -8,6 +11,8 @@ namespace UIMono.Test
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        private UILoader _uILoader;
 
         public Game1()
         {
@@ -27,6 +32,9 @@ namespace UIMono.Test
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            _uILoader = new UILoader("ui.json", _spriteBatch);
+
+
             // TODO: use this.Content to load your game content here
         }
 
@@ -44,6 +52,7 @@ namespace UIMono.Test
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            _uILoader.UIRender();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);

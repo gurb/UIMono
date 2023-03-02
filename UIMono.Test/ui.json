@@ -1,0 +1,32 @@
+{
+  "component": {
+    "type": "panel",
+    "backgroundColor": "brown",
+    "panelType": 0,
+    "sizeType": 1,
+    "width": 400,
+    "height": 500,
+    "children": [
+      {
+        "component": {
+          "type": "panel",
+          "backgroundColor": "green",
+          "sizeType": 1,
+          "width": 400,
+          "height": 200,
+          "children": []
+        }
+      },
+      {
+        "component": {
+          "type": "panel",
+          "backgroundColor": "pink",
+          "sizeType": 1,
+          "width": 400,
+          "height": 300,
+          "children": []
+        }
+      }
+    ]
+  }
+}

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UIMono.Core.Components
+namespace UIMono.Core.Enums
 {
-    public class Panel: Component
+    public enum SizeType
     {
-
+        Pixel,
+        Percentage
     }
 }
