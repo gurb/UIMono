@@ -4,23 +4,23 @@
     "backgroundColor": "brown",
     "panelType": 0,
     "sizeType": 1,
-    "width": 400,
-    "height": 500,
+    "position": [ 0, 0 ],
+    "size": [ 500, 500 ],
     "children": [
       {
         "type": "panel",
         "backgroundColor": "green",
         "sizeType": 1,
-        "width": 400,
-        "height": 200,
+        "position": [ 0, 0 ],
+        "size": [ 400, 200 ],
         "children": []
       },
       {
         "type": "panel",
         "backgroundColor": "pink",
         "sizeType": 1,
-        "width": 400,
-        "height": 300,
+        "position": [ 0, 200 ],
+        "size": [ 400, 300 ],
         "children": []
       }
     ]

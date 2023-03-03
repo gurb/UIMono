@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -17,7 +18,7 @@ namespace UIMono.Core.Caretaker
         string path;
 
         List<ComponentJson>? jsonComponents;
-        List<IComponent> components;
+        List<IComponent>? components;
 
         public static string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
         public static string projectPath = appDirectory.Substring(0, appDirectory.IndexOf("bin"));
@@ -75,7 +76,9 @@ namespace UIMono.Core.Caretaker
 
         private void SetPanel(ComponentJson componentJson)
         {
-            Panel panel = new Panel(componentJson.width, componentJson.height);
+            Panel panel = new Panel(componentJson.size[0], componentJson.size[1]);
+
+            panel.Position = new Vector2(componentJson.position[0], componentJson.position[1]);
 
             if (componentJson.backgroundColor != null)
             {
