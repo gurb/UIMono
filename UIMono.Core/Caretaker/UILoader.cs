@@ -17,7 +17,7 @@ namespace UIMono.Core.Caretaker
 
         public UILoader(string path, SpriteBatch batch, GraphicsDevice device)
         {
-            TextureManager.GraphicsDevice = device;
+            GraphicsManager.GraphicsDevice = device;
             this.batch = batch;
             this.device = device;
 

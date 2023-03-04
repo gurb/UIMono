@@ -20,6 +20,8 @@ namespace UIMono.Core.Components
         Color BackgroundColor { get; set; }
         List<IComponent> Children { get; set; }
         Texture2D? Texture2D { get; set; }
+        RenderTarget2D? RenderTarget2D { get; set; }
+        bool HasParent { get; set; }
 
 
         public void Draw(SpriteBatch spriteBatch);

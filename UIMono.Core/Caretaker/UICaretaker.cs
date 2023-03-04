@@ -57,26 +57,26 @@ namespace UIMono.Core.Caretaker
             }
         }
 
-        private void SetChildrenUI(List<ComponentJson> jsonComponents)
+        private void SetChildrenUI(IComponent parent, List<ComponentJson> jsonComponents)
         {
             if (jsonComponents == null)
                 return;
 
             foreach (var componentJson in jsonComponents)
             {
-                SetComponent(componentJson);
+                SetComponent(componentJson, parent);
             }
         }
 
-        private void SetComponent(ComponentJson componentJson)
+        private void SetComponent(ComponentJson componentJson, IComponent? parent = null)
         {
             if (componentJson.type == "panel")
             {
-                SetPanel(componentJson);
+                SetPanel(componentJson, parent);
             }
         }
 
-        private void SetPanel(ComponentJson componentJson)
+        private void SetPanel(ComponentJson componentJson, IComponent? parent)
         {
             Panel panel = new Panel(componentJson.size[0], componentJson.size[1]);
 
@@ -100,11 +100,20 @@ namespace UIMono.Core.Caretaker
                 }
             }
 
-            components.Add(panel);
+            if(parent == null)
+            {
+                components.Add(panel);
+            } 
+            else
+            {
+                panel.HasParent = true;
+                parent.Children.Add(panel);
+            }
+
 
             if (componentJson.children != null)
             {
-                SetChildrenUI(componentJson.children);
+                SetChildrenUI(panel, componentJson.children);
             }
         }
 
@@ -114,7 +123,10 @@ namespace UIMono.Core.Caretaker
 
             foreach(var component in components)
             {
-                component.Draw(batch);
+                if(!component.HasParent)
+                {
+                    component.Draw(batch);
+                }
             }
 
             batch.End();

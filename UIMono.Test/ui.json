@@ -1,11 +1,11 @@
 [
   {
     "type": "panel",
-    "tag": "panel2",
-    "backgroundColor": "brown",
+    "tag": "panel1",
+    "backgroundColor": "pink",
     "panelType": 0,
     "sizeType": 1,
-    "position": [ 0, 0 ],
+    "position": [278, 0 ],
     "size": [ 500, 500 ],
     "children": [
       {
@@ -13,8 +13,8 @@
         "tag": "panel2",
         "backgroundColor": "green",
         "sizeType": 1,
-        "position": [ 0, 0 ],
-        "size": [ 400, 200 ],
+        "position": [ 50, 0 ],
+        "size": [ 450, 200 ],
         "children": []
       },
       {
