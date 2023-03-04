@@ -11,6 +11,7 @@ namespace UIMono.Core.Models
     public class ComponentJson
     {
         public string? type { get; set; }
+        public string? tag { get; set; }
         public int? sizeType { get; set; }
         public int? panelType { get; set; }
         public string? backgroundColor { get; set; }

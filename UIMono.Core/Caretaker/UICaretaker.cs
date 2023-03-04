@@ -18,7 +18,8 @@ namespace UIMono.Core.Caretaker
         string path;
 
         List<ComponentJson>? jsonComponents;
-        List<IComponent>? components;
+        List<IComponent> components;
+        Dictionary<string, IComponent> componentsWithTag;
 
         public static string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
         public static string projectPath = appDirectory.Substring(0, appDirectory.IndexOf("bin"));
@@ -33,6 +34,7 @@ namespace UIMono.Core.Caretaker
         private void Init()
         {
             components = new List<IComponent>();
+            componentsWithTag = new Dictionary<string, IComponent>(); 
 
             this.ReadFile();
             this.SetUI();
@@ -85,6 +87,19 @@ namespace UIMono.Core.Caretaker
                 panel.BackgroundColor = ColorManager.GetColor(componentJson.backgroundColor);
             }
 
+            if (componentJson.tag != null)
+            {
+                if(!componentsWithTag.ContainsKey(componentJson.tag))
+                {
+                    componentsWithTag.Add(componentJson.tag, panel);
+                    panel.Tag = componentJson.tag;
+                } 
+                else
+                {
+                    throw new Exception("The tag of component must be unique");
+                }
+            }
+
             components.Add(panel);
 
             if (componentJson.children != null)
@@ -104,7 +119,5 @@ namespace UIMono.Core.Caretaker
 
             batch.End();
         }
-
-
     }
 }
