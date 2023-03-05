@@ -2,7 +2,7 @@
   {
     "type": "panel",
     "tag": "panel1",
-    "backgroundColor": "pink",
+    "backgroundColor": "blue",
     "panelType": 0,
     "sizeType": 1,
     "position": [278, 0 ],
@@ -15,7 +15,37 @@
         "sizeType": 1,
         "position": [ 50, 0 ],
         "size": [ 450, 200 ],
-        "children": []
+        "children": [
+          {
+            "type": "panel",
+            "tag": "panel4",
+            "backgroundColor": "red",
+            "sizeType": 1,
+            "position": [ 0, 0 ],
+            "size": [ 50, 50 ],
+            "children": [
+              {
+                "type": "panel",
+                "tag": "panel5",
+                "backgroundColor": "yellow",
+                "sizeType": 1,
+                "position": [ 25, 0 ],
+                "size": [ 50, 50 ],
+                "children": [
+                  {
+                    "type": "panel",
+                    "tag": "panel6",
+                    "backgroundColor": "purple",
+                    "sizeType": 1,
+                    "position": [ 0, 12 ],
+                    "size": [ 5, 5 ],
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
         "type": "panel",

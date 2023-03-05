@@ -38,14 +38,11 @@ namespace UIMono.Core.Components
                 spriteBatch.Begin();
 
 
-                spriteBatch.Draw(Texture2D, new Vector2(0,0), Color.White);
+                spriteBatch.Draw(Texture2D, new Vector2(0,0), BackgroundColor);
 
                 foreach (var child in Children)
                 {
-                    if (child.Texture2D != null)
-                    {
-                        spriteBatch.Draw(child.Texture2D, child.Position, child.BackgroundColor);
-                    }
+                    ReDraw(spriteBatch, child, this);
                 }
 
                 spriteBatch.End();
@@ -63,6 +60,38 @@ namespace UIMono.Core.Components
             else
             {
                 spriteBatch.Draw(Texture2D, Position, Color.White);
+            }
+        }
+
+        private void ReDraw(SpriteBatch spriteBatch, IComponent childComponent, IComponent parent)
+        {
+            if (childComponent.Children.Count > 0 && GraphicsManager.GraphicsDevice != null)
+            {
+                spriteBatch.End();
+
+                GraphicsManager.GraphicsDevice.SetRenderTarget(childComponent.RenderTarget2D);
+
+                spriteBatch.Begin();
+
+                spriteBatch.Draw(childComponent.Texture2D, new Vector2(0, 0), childComponent.BackgroundColor);
+
+
+                foreach (var child in childComponent.Children)
+                {
+                    ReDraw(spriteBatch, child, childComponent);
+                }
+
+                spriteBatch.End();
+
+                GraphicsManager.GraphicsDevice.SetRenderTarget(parent.RenderTarget2D);
+                GraphicsManager.GraphicsDevice.Clear(parent.BackgroundColor);
+                spriteBatch.Begin();
+                spriteBatch.Draw(childComponent.RenderTarget2D, childComponent.Position, Color.White);
+
+            }
+            else
+            {
+                spriteBatch.Draw(childComponent.Texture2D, childComponent.Position, childComponent.BackgroundColor);
             }
         }
 
