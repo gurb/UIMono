@@ -24,6 +24,7 @@ namespace UIMono.Core.Caretaker
         public static string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
         public static string projectPath = appDirectory.Substring(0, appDirectory.IndexOf("bin"));
 
+
         public UICaretaker(string path)
         {
             this.path = path;
@@ -86,6 +87,10 @@ namespace UIMono.Core.Caretaker
             {
                 panel.BackgroundColor = ColorManager.GetColor(componentJson.backgroundColor);
             }
+            if (componentJson.opacity != null)
+            {
+                panel.Opacity = componentJson.opacity.Value;
+            }
 
             if (componentJson.tag != null)
             {
@@ -119,7 +124,7 @@ namespace UIMono.Core.Caretaker
 
         public void Render(SpriteBatch batch)
         {
-            batch.Begin();
+            batch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
 
             foreach(var component in components)
             {

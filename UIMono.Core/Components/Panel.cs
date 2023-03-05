@@ -25,7 +25,7 @@ namespace UIMono.Core.Components
             this.Texture2D = Texture2D;
             this.Size = new Vector2(Texture2D.Width, Texture2D.Height);
 
-            this.RenderTarget2D = new RenderTarget2D(GraphicsManager.GraphicsDevice, (int)this.Size.X, (int)this.Size.Y);
+            this.RenderTarget2D = new RenderTarget2D(GraphicsManager.GraphicsDevice, (int)this.Size.X, (int)this.Size.Y, false, SurfaceFormat.Color, DepthFormat.None);
         }
 
         public Panel(int width, int height)
@@ -33,7 +33,7 @@ namespace UIMono.Core.Components
             Texture2D = TextureManager.GenerateTexture(Color.White, width, height);
             this.Size = new Vector2(width, height);
 
-            this.RenderTarget2D = new RenderTarget2D(GraphicsManager.GraphicsDevice, (int)this.Size.X, (int)this.Size.Y);
+            this.RenderTarget2D = new RenderTarget2D(GraphicsManager.GraphicsDevice, (int)this.Size.X, (int)this.Size.Y, false, SurfaceFormat.Color, DepthFormat.None);
         }
     }
 }

@@ -22,6 +22,7 @@ namespace UIMono.Core.Components
         Texture2D? Texture2D { get; set; }
         RenderTarget2D? RenderTarget2D { get; set; }
         bool HasParent { get; set; }
+        float Opacity { get; set; }
 
 
         public void Draw(SpriteBatch spriteBatch);

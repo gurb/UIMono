@@ -52,6 +52,10 @@ namespace UIMono.Core.Managers
             {
                 return Color.Gray;
             }
+            if (color == "brown")
+            {
+                return Color.Brown;
+            }
             return Color.White;
         }
     }

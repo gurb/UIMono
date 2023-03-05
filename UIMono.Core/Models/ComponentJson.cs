@@ -15,6 +15,7 @@ namespace UIMono.Core.Models
         public int? sizeType { get; set; }
         public int? panelType { get; set; }
         public string? backgroundColor { get; set; }
+        public float? opacity { get; set; }
         public List<int> position { get; set; }
         public List<int> size { get; set; }
         public List<ComponentJson>? children { get; set; }

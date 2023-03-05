@@ -10,5 +10,13 @@ namespace UIMono.Core.Managers
     public static class GraphicsManager
     {
         public static GraphicsDevice? GraphicsDevice { get; set; }
+        public static SpriteSortMode SpriteSortMode { get; set; } = SpriteSortMode.Deferred;
+        public static BlendState BlendState { get; set; } = BlendState.AlphaBlend;
+        public static BlendState AlphaBlendState { get; set; } = new BlendState
+        {
+            AlphaBlendFunction = BlendFunction.Add,
+            AlphaSourceBlend = Blend.SourceAlpha,
+            AlphaDestinationBlend = Blend.One
+        };
     }
 }

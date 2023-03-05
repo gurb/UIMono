@@ -23,6 +23,8 @@ namespace UIMono.Core.Components
         public Texture2D? Texture2D { get; set; }
         public RenderTarget2D? RenderTarget2D { get; set; }
         public bool HasParent { get; set; }
+        public float Opacity { get; set; } = 1.0f;
+        
 
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -35,10 +37,11 @@ namespace UIMono.Core.Components
 
                 GraphicsManager.GraphicsDevice.SetRenderTarget(RenderTarget2D);
 
-                spriteBatch.Begin();
+                spriteBatch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
 
 
-                spriteBatch.Draw(Texture2D, new Vector2(0,0), BackgroundColor);
+                spriteBatch.Draw(Texture2D, new Vector2(0, 0), BackgroundColor * Opacity);
+
 
                 foreach (var child in Children)
                 {
@@ -51,10 +54,11 @@ namespace UIMono.Core.Components
                 if (HasParent == false)
                 {
                     GraphicsManager.GraphicsDevice.SetRenderTarget(null);
-                    spriteBatch.Begin();
+                   
+                    spriteBatch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
 
 
-                    spriteBatch.Draw(RenderTarget2D, Position, Color.White);
+                    spriteBatch.Draw(RenderTarget2D, Position, Color.White * Opacity);
                 }
             }
             else
@@ -70,10 +74,9 @@ namespace UIMono.Core.Components
                 spriteBatch.End();
 
                 GraphicsManager.GraphicsDevice.SetRenderTarget(childComponent.RenderTarget2D);
+                spriteBatch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
 
-                spriteBatch.Begin();
-
-                spriteBatch.Draw(childComponent.Texture2D, new Vector2(0, 0), childComponent.BackgroundColor);
+                spriteBatch.Draw(childComponent.Texture2D, new Vector2(0, 0), childComponent.BackgroundColor * childComponent.Opacity);
 
 
                 foreach (var child in childComponent.Children)
@@ -85,13 +88,12 @@ namespace UIMono.Core.Components
 
                 GraphicsManager.GraphicsDevice.SetRenderTarget(parent.RenderTarget2D);
                 GraphicsManager.GraphicsDevice.Clear(parent.BackgroundColor);
-                spriteBatch.Begin();
-                spriteBatch.Draw(childComponent.RenderTarget2D, childComponent.Position, Color.White);
-
+                spriteBatch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
+                spriteBatch.Draw(childComponent.RenderTarget2D, childComponent.Position, Color.White * childComponent.Opacity);
             }
             else
             {
-                spriteBatch.Draw(childComponent.Texture2D, childComponent.Position, childComponent.BackgroundColor);
+                spriteBatch.Draw(childComponent.Texture2D, childComponent.Position, childComponent.BackgroundColor *childComponent.Opacity);
             }
         }
 

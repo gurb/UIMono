@@ -5,6 +5,7 @@
     "backgroundColor": "blue",
     "panelType": 0,
     "sizeType": 1,
+    "opacity": 1,
     "position": [278, 0 ],
     "size": [ 500, 500 ],
     "children": [
@@ -23,6 +24,7 @@
             "sizeType": 1,
             "position": [ 0, 0 ],
             "size": [ 50, 50 ],
+            "opacity": 0.5,
             "children": [
               {
                 "type": "panel",
@@ -38,6 +40,7 @@
                     "backgroundColor": "purple",
                     "sizeType": 1,
                     "position": [ 0, 12 ],
+                    "opacity": 0.5,
                     "size": [ 5, 5 ],
                     "children": []
                   }
