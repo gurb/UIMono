@@ -5,7 +5,7 @@
     "backgroundColor": "blue",
     "panelType": 0,
     "sizeType": 1,
-    "opacity": 1,
+    "opacity": 0.2,
     "position": [278, 0 ],
     "size": [ 500, 500 ],
     "children": [
@@ -14,6 +14,7 @@
         "tag": "panel2",
         "backgroundColor": "green",
         "sizeType": 1,
+        "opacity":  0.1,
         "position": [ 50, 0 ],
         "size": [ 450, 200 ],
         "children": [

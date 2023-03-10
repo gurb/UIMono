@@ -40,7 +40,7 @@ namespace UIMono.Core.Components
                 spriteBatch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
 
 
-                spriteBatch.Draw(Texture2D, new Vector2(0, 0), BackgroundColor * Opacity);
+                spriteBatch.Draw(Texture2D, new Vector2(0, 0), BackgroundColor);
 
 
                 foreach (var child in Children)
@@ -58,7 +58,7 @@ namespace UIMono.Core.Components
                     spriteBatch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
 
 
-                    spriteBatch.Draw(RenderTarget2D, Position, Color.White * Opacity);
+                    spriteBatch.Draw(RenderTarget2D, Position, Color.White);
                 }
             }
             else
@@ -76,7 +76,7 @@ namespace UIMono.Core.Components
                 GraphicsManager.GraphicsDevice.SetRenderTarget(childComponent.RenderTarget2D);
                 spriteBatch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
 
-                spriteBatch.Draw(childComponent.Texture2D, new Vector2(0, 0), childComponent.BackgroundColor * childComponent.Opacity);
+                spriteBatch.Draw(childComponent.Texture2D, new Vector2(0, 0), childComponent.BackgroundColor);
 
 
                 foreach (var child in childComponent.Children)
@@ -87,13 +87,13 @@ namespace UIMono.Core.Components
                 spriteBatch.End();
 
                 GraphicsManager.GraphicsDevice.SetRenderTarget(parent.RenderTarget2D);
-                GraphicsManager.GraphicsDevice.Clear(parent.BackgroundColor);
+                GraphicsManager.GraphicsDevice.Clear(parent.BackgroundColor * parent.Opacity);
                 spriteBatch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
-                spriteBatch.Draw(childComponent.RenderTarget2D, childComponent.Position, Color.White * childComponent.Opacity);
+                spriteBatch.Draw(childComponent.RenderTarget2D, childComponent.Position, Color.White);
             }
             else
             {
-                spriteBatch.Draw(childComponent.Texture2D, childComponent.Position, childComponent.BackgroundColor *childComponent.Opacity);
+                spriteBatch.Draw(childComponent.Texture2D, childComponent.Position, childComponent.BackgroundColor);
             }
         }
 

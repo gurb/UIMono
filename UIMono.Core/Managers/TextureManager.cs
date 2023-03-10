@@ -10,7 +10,7 @@ namespace UIMono.Core.Managers
 {
     public static class TextureManager
     {
-        public static Texture2D GenerateTexture(Color color, int width=0, int height=0)
+        public static Texture2D GenerateTexture(Color color, int width=0, int height=0, float alpha=1f)
         {
             if (GraphicsManager.GraphicsDevice != null)
             {
@@ -19,7 +19,7 @@ namespace UIMono.Core.Managers
                 Color[] pixels = new Color[width * height];
                 for (int index = 0; index < pixels.Count(); index++)
                 {
-                    pixels[index] = color;
+                    pixels[index] = new Color(color, alpha);
                 }
 
                 texture.SetData(pixels);
