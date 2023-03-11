@@ -10,7 +10,7 @@ namespace UIMono.Core.Managers
 {
     public static class TextureManager
     {
-        public static Texture2D GenerateTexture(Color color, int width=0, int height=0, float alpha=1f)
+        public static Texture2D GenerateTexture(Color color, int width = 0, int height = 0, float alpha = 1f, bool isPercentage = false)
         {
             if (GraphicsManager.GraphicsDevice != null)
             {

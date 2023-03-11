@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UIMono.Core.Enums;
 using UIMono.Core.Managers;
 
 namespace UIMono.Core.Components
@@ -23,9 +24,74 @@ namespace UIMono.Core.Components
         public Texture2D? Texture2D { get; set; }
         public RenderTarget2D? RenderTarget2D { get; set; }
         public bool HasParent { get; set; }
+        public bool IsDrawable { get; set; }
+        public SizeType SizeType { get; set; } = SizeType.Pixel;
         public float Opacity { get; set; } = 1.0f;
-        
+        /// <summary>
+        /// WR (Width Ratio, 1.0f == 100%, 0.1f == 10%)
+        /// </summary>
+        public float WR { get; set; } = 1.0f;
+        /// <summary>
+        /// HR (Height Ratio, 1.0f == 100%, 0.1f == 10%)
+        /// </summary>
+        public float HR { get; set; } = 1.0f;
+        /// <summary>
+        /// Padding (x:Top, y:Left, z:Bottom, w:Right)
+        /// </summary>
+        public Vector4 Padding { get; set; } = new Vector4(0, 0, 0, 0);
+        /// <summary>
+        /// Margin (x:Top, y:Left, z:Bottom, w:Right)
+        /// </summary>
+        public Vector4 Margin { get; set; } = new Vector4(0, 0, 0, 0);
 
+
+        public virtual void GenerateSurface(Texture2D Texture2D)
+        {
+            this.Texture2D = Texture2D;
+            this.Size = new Vector2(Texture2D.Width, Texture2D.Height);
+
+            SetRenderTarget();
+        }
+
+        public virtual void GenerateSurface(int width, int height)
+        {
+            Texture2D = TextureManager.GenerateTexture(Color.White, width, height);
+            this.Size = new Vector2(width, height);
+
+            SetRenderTarget();
+        }
+
+        public virtual void GenerateSurface(float wr, float hr)
+        {
+            this.WR = wr;
+            this.HR = hr;
+
+            if(wr > 2f || hr > 2f)
+            {
+                throw new Exception("Avoid over 2 ratio usage");
+            } 
+            else if(wr < 0f || hr < 0f)
+            {
+                throw new Exception("The ratio cannot be negative");
+            }
+
+            int width = (int)(wr * 800);
+            int height = (int)(hr * 480);
+
+            Texture2D = TextureManager.GenerateTexture(Color.White, width, height);
+            this.Size = new Vector2(width, height);
+
+            SetRenderTarget();
+        }
+
+
+        public virtual void SetRenderTarget()
+        {
+            if (IsDrawable)
+            {
+                this.RenderTarget2D = new RenderTarget2D(GraphicsManager.GraphicsDevice, (int)this.Size.X, (int)this.Size.Y, false, SurfaceFormat.Color, DepthFormat.None);
+            }
+        }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {

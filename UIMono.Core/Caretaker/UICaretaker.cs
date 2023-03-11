@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UIMono.Core.Components;
+using UIMono.Core.Enums;
 using UIMono.Core.Managers;
 using UIMono.Core.Models;
 
@@ -79,9 +80,17 @@ namespace UIMono.Core.Caretaker
 
         private void SetPanel(ComponentJson componentJson, IComponent? parent)
         {
-            Panel panel = new Panel(componentJson.size[0], componentJson.size[1]);
+            Panel panel = new Panel();
 
             panel.Position = new Vector2(componentJson.position[0], componentJson.position[1]);
+
+            if(componentJson.sizeType == (int)SizeType.Percentage)
+            {
+                panel.GenerateSurface(componentJson.size[0], componentJson.size[1]);
+            } else
+            {
+                panel.GenerateSurface((int)componentJson.size[0], (int)componentJson.size[1]);
+            }
 
             if (componentJson.backgroundColor != null)
             {
