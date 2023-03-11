@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,10 +15,12 @@ namespace UIMono.Core.Caretaker
         private UICaretaker caretaker { get; set; }
         private SpriteBatch batch { get; set; }
         private GraphicsDevice device { get; set; }
+        private GameWindow window { get; set; }
 
-        public UILoader(string path, SpriteBatch batch, GraphicsDevice device)
+        public UILoader(string path, SpriteBatch batch, GraphicsDevice device, GameWindow window)
         {
             GraphicsManager.GraphicsDevice = device;
+            WindowManager.Window = window;
             this.batch = batch;
             this.device = device;
 
@@ -27,6 +30,11 @@ namespace UIMono.Core.Caretaker
         private void Init(string path)
         {
             caretaker = new UICaretaker(path);
+        }
+
+        public void UIUpdate()
+        {
+            caretaker.Update();
         }
 
         public void UIRender()

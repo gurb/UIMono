@@ -25,6 +25,10 @@ namespace UIMono.Core.Caretaker
         public static string appDirectory = AppDomain.CurrentDomain.BaseDirectory;
         public static string projectPath = appDirectory.Substring(0, appDirectory.IndexOf("bin"));
 
+        private int OLD_WINDOW_WIDTH;
+        private int OLD_WINDOW_HEIGHT;
+
+        private bool RESIZE;
 
         public UICaretaker(string path)
         {
@@ -36,8 +40,11 @@ namespace UIMono.Core.Caretaker
         private void Init()
         {
             components = new List<IComponent>();
-            componentsWithTag = new Dictionary<string, IComponent>(); 
+            componentsWithTag = new Dictionary<string, IComponent>();
 
+            OLD_WINDOW_WIDTH = GraphicsManager.GraphicsDevice.Viewport.Bounds.Width;
+            OLD_WINDOW_HEIGHT = GraphicsManager.GraphicsDevice.Viewport.Bounds.Height;
+            
             this.ReadFile();
             this.SetUI();
         }
@@ -82,15 +89,27 @@ namespace UIMono.Core.Caretaker
         {
             Panel panel = new Panel();
 
-            panel.Position = new Vector2(componentJson.position[0], componentJson.position[1]);
-
             if(componentJson.sizeType == (int)SizeType.Percentage)
             {
                 panel.GenerateSurface(componentJson.size[0], componentJson.size[1]);
-            } else
+                panel.SizeType = SizeType.Percentage;
+            } 
+            else
             {
                 panel.GenerateSurface((int)componentJson.size[0], (int)componentJson.size[1]);
             }
+
+            if(componentJson.padding != null)
+            {
+                panel.Padding = new Vector4(componentJson.padding[0], componentJson.padding[1], componentJson.padding[2], componentJson.padding[3]); 
+            }
+
+            if(componentJson.margin != null)
+            {
+                panel.Margin = new Vector4(componentJson.margin[0], componentJson.margin[1], componentJson.margin[2], componentJson.margin[3]);
+            }
+
+            panel.Position = new Vector2(componentJson.position[0], componentJson.position[1]);
 
             if (componentJson.backgroundColor != null)
             {
@@ -130,6 +149,36 @@ namespace UIMono.Core.Caretaker
                 SetChildrenUI(panel, componentJson.children);
             }
         }
+
+        public void Update()
+        {
+            CheckDimension();
+
+            foreach (var component in components)
+            {
+                component.Update(RESIZE);
+            } 
+
+            RESIZE = false;
+        }
+
+
+        private void CheckDimension()
+        {
+            if (OLD_WINDOW_WIDTH != GraphicsManager.GraphicsDevice.Viewport.Bounds.Width)
+            {
+                OLD_WINDOW_WIDTH = GraphicsManager.GraphicsDevice.Viewport.Bounds.Width;
+
+                RESIZE = true;
+            }
+            if (OLD_WINDOW_HEIGHT != GraphicsManager.GraphicsDevice.Viewport.Bounds.Height)
+            {
+                OLD_WINDOW_HEIGHT = GraphicsManager.GraphicsDevice.Viewport.Bounds.Height;
+
+                RESIZE = true;
+            }
+        }
+
 
         public void Render(SpriteBatch batch)
         {

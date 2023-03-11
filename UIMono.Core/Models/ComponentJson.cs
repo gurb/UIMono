@@ -18,6 +18,8 @@ namespace UIMono.Core.Models
         public float? opacity { get; set; }
         public List<float> position { get; set; }
         public List<float> size { get; set; }
+        public List<int>? padding { get; set; }
+        public List<int>? margin { get; set; }
         public List<ComponentJson>? children { get; set; }
 
     }

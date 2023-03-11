@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.IO;
+using System.Security.Principal;
 using UIMono.Core.Caretaker;
 
 namespace UIMono.Test
@@ -16,8 +17,25 @@ namespace UIMono.Test
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            //_graphics = new GraphicsDeviceManager(this);
+            //_graphics.PreferredBackBufferWidth = 1280;
+            //_graphics.PreferredBackBufferHeight = 720;
+            //_graphics.ApplyChanges();
+
+            int initial_screen_width = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            int initial_screen_height = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            _graphics = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = initial_screen_width,
+                PreferredBackBufferHeight = initial_screen_height,
+                IsFullScreen = false,
+                PreferredDepthStencilFormat = DepthFormat.None
+            };
+            _graphics.PreferMultiSampling = false;
+            Window.AllowUserResizing = true;
             Content.RootDirectory = "Content";
+
+                
             IsMouseVisible = true;
         }
 
@@ -32,7 +50,7 @@ namespace UIMono.Test
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _uILoader = new UILoader("ui.json", _spriteBatch, GraphicsDevice);
+            _uILoader = new UILoader("ui.json", _spriteBatch, GraphicsDevice, Window);
 
 
             // TODO: use this.Content to load your game content here
@@ -44,6 +62,8 @@ namespace UIMono.Test
                 Exit();
 
             // TODO: Add your update logic here
+
+            _uILoader.UIUpdate();
 
             base.Update(gameTime);
         }

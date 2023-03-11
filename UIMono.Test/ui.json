@@ -17,6 +17,7 @@
         "opacity":  0.1,
         "position": [ 50, 0 ],
         "size": [ 450, 200 ],
+        "padding": [ 10, 10, 10, 10 ],
         "children": [
           {
             "type": "panel",
@@ -55,7 +56,7 @@
         "type": "panel",
         "tag": "panel3",
         "backgroundColor": "pink",
-        "sizeType": 1,
+        "sizeType": 0,
         "position": [ 0, 200 ],
         "size": [ 400, 300 ],
         "children": []

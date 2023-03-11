@@ -45,11 +45,19 @@ namespace UIMono.Core.Components
         public Vector4 Margin { get; set; } = new Vector4(0, 0, 0, 0);
 
 
+
+        public int OriginalWidth { get; set; }
+        public int OriginalHeight { get; set; }
+
+        public int CalcWidth { get; set; }
+        public int CalcHeight { get; set; }
+
         public virtual void GenerateSurface(Texture2D Texture2D)
         {
             this.Texture2D = Texture2D;
             this.Size = new Vector2(Texture2D.Width, Texture2D.Height);
 
+            SetDimension();
             SetRenderTarget();
         }
 
@@ -58,6 +66,9 @@ namespace UIMono.Core.Components
             Texture2D = TextureManager.GenerateTexture(Color.White, width, height);
             this.Size = new Vector2(width, height);
 
+            
+
+            SetDimension();
             SetRenderTarget();
         }
 
@@ -75,15 +86,27 @@ namespace UIMono.Core.Components
                 throw new Exception("The ratio cannot be negative");
             }
 
-            int width = (int)(wr * 800);
-            int height = (int)(hr * 480);
+            int width = (int)(wr * GraphicsManager.GraphicsDevice.Viewport.Bounds.Width);
+            int height = (int)(hr * GraphicsManager.GraphicsDevice.Viewport.Bounds.Height);
 
             Texture2D = TextureManager.GenerateTexture(Color.White, width, height);
+
+            
+
             this.Size = new Vector2(width, height);
 
+            SetDimension();
             SetRenderTarget();
         }
 
+        private void SetDimension() 
+        {
+            this.OriginalWidth = Texture2D.Width;
+            this.OriginalHeight = Texture2D.Height;
+
+            this.CalcWidth = Texture2D.Width;
+            this.CalcHeight = Texture2D.Height;
+        }
 
         public virtual void SetRenderTarget()
         {
@@ -93,12 +116,19 @@ namespace UIMono.Core.Components
             }
         }
 
+        public virtual void Update(bool resize)
+        {
+            if (resize && SizeType == SizeType.Percentage)
+            {
+                CalcWidth = (int) (GraphicsManager.GraphicsDevice.Viewport.Bounds.Width * WR);
+                CalcHeight = (int) (GraphicsManager.GraphicsDevice.Viewport.Bounds.Height * HR);
+            }
+        }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            
             if(Children.Count > 0 && GraphicsManager.GraphicsDevice != null)
             {
-
                 spriteBatch.End();
 
                 GraphicsManager.GraphicsDevice.SetRenderTarget(RenderTarget2D);
@@ -124,7 +154,13 @@ namespace UIMono.Core.Components
                     spriteBatch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
 
 
-                    spriteBatch.Draw(RenderTarget2D, Position, Color.White);
+                    //spriteBatch.Draw(RenderTarget2D, Position, Color.White);
+                    spriteBatch.Draw(
+                        RenderTarget2D,
+                        new Rectangle((int)Position.X, (int)Position.Y, CalcWidth, CalcHeight),
+                        new Rectangle(0, 0, OriginalWidth, OriginalHeight),
+                        Color.White
+                    );
                 }
             }
             else
@@ -155,18 +191,23 @@ namespace UIMono.Core.Components
                 GraphicsManager.GraphicsDevice.SetRenderTarget(parent.RenderTarget2D);
                 GraphicsManager.GraphicsDevice.Clear(parent.BackgroundColor * parent.Opacity);
                 spriteBatch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
-                spriteBatch.Draw(childComponent.RenderTarget2D, childComponent.Position, Color.White);
+
+                Vector2 currentPosition = new Vector2(childComponent.Position.X + childComponent.Margin.X, childComponent.Position.Y + childComponent.Margin.Y);
+                currentPosition = new Vector2(currentPosition.X + parent.Padding.X, currentPosition.Y + parent.Padding.Y);
+
+                //spriteBatch.Draw(childComponent.RenderTarget2D, currentPosition, Color.White);
+                spriteBatch.Draw(
+                    childComponent.RenderTarget2D,
+                    new Rectangle((int)currentPosition.X, (int)currentPosition.Y, childComponent.CalcWidth, childComponent.CalcHeight),
+                    new Rectangle(0,0, childComponent.OriginalWidth, childComponent.OriginalHeight),
+                    Color.White
+                );
+
             }
             else
             {
                 spriteBatch.Draw(childComponent.Texture2D, childComponent.Position, childComponent.BackgroundColor);
             }
         }
-
-        public virtual void Update()
-        {
-           
-        }
-
     }
 }

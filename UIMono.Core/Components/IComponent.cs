@@ -13,7 +13,7 @@ namespace UIMono.Core.Components
         string ParentTag { get; set; }
         string Tag { get; set; } 
         Vector2 Position { get; set; } 
-        Vector2 Size { get; set; } 
+        Vector2 Size { get; set; }
         int ZIndex { get; set; }
         bool Enabled { get; set; }
         bool Visible { get; set; }
@@ -24,10 +24,20 @@ namespace UIMono.Core.Components
         bool HasParent { get; set; }
         float Opacity { get; set; }
         bool IsDrawable { get; set; }
+        float WR { get; set; }
+        float HR { get; set; }
+        Vector4 Padding { get; set; }
+        Vector4 Margin { get; set; }
+
+        int OriginalWidth { get; set; }
+        int OriginalHeight { get; set; }
+
+        int CalcWidth { get; set; }
+        int CalcHeight { get; set; }
 
 
         public void Draw(SpriteBatch spriteBatch);
 
-        public void Update();
+        public void Update(bool resize);
     }
 }
