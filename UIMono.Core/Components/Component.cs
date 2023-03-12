@@ -162,7 +162,7 @@ namespace UIMono.Core.Components
             Batch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
 
             Batch.Draw(Texture2D, new Rectangle((int)Position.X, (int)Position.Y, CalcWidth, CalcHeight),
-                       new Rectangle(0, 0, OriginalWidth, OriginalHeight), BackgroundColor);
+                       new Rectangle(0, 0, OriginalWidth, OriginalHeight), BackgroundColor * Opacity);
 
             Batch.End();
 
