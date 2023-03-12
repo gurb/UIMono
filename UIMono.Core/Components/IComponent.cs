@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UIMono.Core.Enums;
 
 namespace UIMono.Core.Components
 {
@@ -18,9 +19,14 @@ namespace UIMono.Core.Components
         bool Enabled { get; set; }
         bool Visible { get; set; }
         Color BackgroundColor { get; set; }
+        IComponent Parent { get; set; }
         List<IComponent> Children { get; set; }
         Texture2D? Texture2D { get; set; }
         RenderTarget2D? RenderTarget2D { get; set; }
+
+        SpriteBatch Batch { get; set; }
+        Viewport Viewport { get; set; }
+        SizeType SizeType { get; set; }
         bool HasParent { get; set; }
         float Opacity { get; set; }
         bool IsDrawable { get; set; }

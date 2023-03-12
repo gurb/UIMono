@@ -20,9 +20,13 @@ namespace UIMono.Core.Components
         public bool Enabled { get; set; }
         public bool Visible { get; set; }
         public Color BackgroundColor { get; set; }
+        public IComponent Parent { get; set; }
+        public SpriteBatch Batch { get; set; }
         public List<IComponent> Children { get; set; } = new List<IComponent>();
         public Texture2D? Texture2D { get; set; }
         public RenderTarget2D? RenderTarget2D { get; set; }
+        public Viewport Viewport { get; set; }
+
         public bool HasParent { get; set; }
         public bool IsDrawable { get; set; }
         public SizeType SizeType { get; set; } = SizeType.Pixel;
@@ -66,8 +70,6 @@ namespace UIMono.Core.Components
             Texture2D = TextureManager.GenerateTexture(Color.White, width, height);
             this.Size = new Vector2(width, height);
 
-            
-
             SetDimension();
             SetRenderTarget();
         }
@@ -86,8 +88,8 @@ namespace UIMono.Core.Components
                 throw new Exception("The ratio cannot be negative");
             }
 
-            int width = (int)(wr * GraphicsManager.GraphicsDevice.Viewport.Bounds.Width);
-            int height = (int)(hr * GraphicsManager.GraphicsDevice.Viewport.Bounds.Height);
+            int width = (int)(wr * GraphicsManager.GraphicsDevice.DisplayMode.Width);
+            int height = (int)(hr * GraphicsManager.GraphicsDevice.DisplayMode.Height);
 
             Texture2D = TextureManager.GenerateTexture(Color.White, width, height);
 
@@ -112,6 +114,14 @@ namespace UIMono.Core.Components
         {
             if (IsDrawable)
             {
+
+                this.Size = new Vector2(
+                    GraphicsManager.GraphicsDeviceManager.PreferredBackBufferWidth * WR, 
+                    GraphicsManager.GraphicsDeviceManager.PreferredBackBufferHeight * HR
+                );
+
+                this.Viewport = new Viewport((int)Position.X, (int)Position.Y,(int)this.Size.X, (int)this.Size.Y);
+                this.Batch = new SpriteBatch(GraphicsManager.GraphicsDevice);
                 this.RenderTarget2D = new RenderTarget2D(GraphicsManager.GraphicsDevice, (int)this.Size.X, (int)this.Size.Y, false, SurfaceFormat.Color, DepthFormat.None);
             }
         }
@@ -120,53 +130,96 @@ namespace UIMono.Core.Components
         {
             if (resize && SizeType == SizeType.Percentage)
             {
-                CalcWidth = (int) (GraphicsManager.GraphicsDevice.Viewport.Bounds.Width * WR);
-                CalcHeight = (int) (GraphicsManager.GraphicsDevice.Viewport.Bounds.Height * HR);
+
+                this.Size = new Vector2(
+                    GraphicsManager.GraphicsDeviceManager.PreferredBackBufferWidth * WR,
+                    GraphicsManager.GraphicsDeviceManager.PreferredBackBufferHeight * HR
+                );
+
+                CalcWidth = (int) (GraphicsManager.GraphicsDevice.PresentationParameters.BackBufferWidth * WR);
+                CalcHeight = (int) (GraphicsManager.GraphicsDevice.PresentationParameters.BackBufferHeight * HR);
+
+                
+
+                this.Viewport = new Viewport((int)Position.X, (int)Position.Y, CalcWidth, CalcHeight);
             }
+            else if (resize && SizeType == SizeType.Pixel && HasParent)
+            {
+                if (Parent.SizeType == SizeType.Percentage)
+                {
+
+                    //CalcWidth = 
+                }
+            }
+
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if(Children.Count > 0 && GraphicsManager.GraphicsDevice != null)
-            {
-                spriteBatch.End();
-
-                GraphicsManager.GraphicsDevice.SetRenderTarget(RenderTarget2D);
-
-                spriteBatch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
+            GraphicsManager.GraphicsDevice.Viewport = this.Viewport;
 
 
-                spriteBatch.Draw(Texture2D, new Vector2(0, 0), BackgroundColor);
+            Batch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
+
+            Batch.Draw(Texture2D, new Rectangle((int)Position.X, (int)Position.Y, CalcWidth, CalcHeight),
+                       new Rectangle(0, 0, OriginalWidth, OriginalHeight), BackgroundColor);
+
+            Batch.End();
+
+            GraphicsManager.GraphicsDevice.Viewport = GraphicsManager.DefaultViewport;
 
 
-                foreach (var child in Children)
-                {
-                    ReDraw(spriteBatch, child, this);
-                }
-
-                spriteBatch.End();
+            //if (HasParent == false)
+            //{
+            //    spriteBatch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
 
 
-                if (HasParent == false)
-                {
-                    GraphicsManager.GraphicsDevice.SetRenderTarget(null);
-                   
-                    spriteBatch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
+
+            //}
 
 
-                    //spriteBatch.Draw(RenderTarget2D, Position, Color.White);
-                    spriteBatch.Draw(
-                        RenderTarget2D,
-                        new Rectangle((int)Position.X, (int)Position.Y, CalcWidth, CalcHeight),
-                        new Rectangle(0, 0, OriginalWidth, OriginalHeight),
-                        Color.White
-                    );
-                }
-            }
-            else
-            {
-                spriteBatch.Draw(Texture2D, Position, Color.White);
-            }
+            //    if (Children.Count > 0 && GraphicsManager.GraphicsDevice != null)
+            //{
+            //    spriteBatch.End();
+
+            //    GraphicsManager.GraphicsDevice.SetRenderTarget(RenderTarget2D);
+
+            //    spriteBatch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
+
+
+            //    //spriteBatch.Draw(Texture2D, new Vector2(0, 0), BackgroundColor);
+
+
+            //    foreach (var child in Children)
+            //    {
+            //        ReDraw(spriteBatch, child, this);
+            //    }
+
+            //    spriteBatch.End();
+
+
+            //    if (HasParent == false)
+            //    {
+            //        GraphicsManager.GraphicsDevice.SetRenderTarget(null);
+            //        GraphicsManager.GraphicsDevice.Clear(Color.CornflowerBlue);
+
+
+            //        spriteBatch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
+
+
+            //        //spriteBatch.Draw(RenderTarget2D, Position, Color.White);
+            //        spriteBatch.Draw(
+            //            RenderTarget2D,
+            //            new Rectangle((int)Position.X, (int)Position.Y, CalcWidth, CalcHeight),
+            //            new Rectangle(0, 0, OriginalWidth, OriginalHeight),
+            //            Color.White
+            //        );
+            //    }
+            //}
+            //else
+            //{
+            //    spriteBatch.Draw(Texture2D, Position, Color.White);
+            //}
         }
 
         private void ReDraw(SpriteBatch spriteBatch, IComponent childComponent, IComponent parent)

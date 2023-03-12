@@ -50,7 +50,7 @@ namespace UIMono.Test
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _uILoader = new UILoader("ui.json", _spriteBatch, GraphicsDevice, Window);
+            _uILoader = new UILoader("ui.json", _spriteBatch, GraphicsDevice, Window, GraphicsDevice.Viewport, GraphicsAdapter.DefaultAdapter, _graphics);
 
 
             // TODO: use this.Content to load your game content here

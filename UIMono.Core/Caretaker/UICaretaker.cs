@@ -28,6 +28,8 @@ namespace UIMono.Core.Caretaker
         private int OLD_WINDOW_WIDTH;
         private int OLD_WINDOW_HEIGHT;
 
+        private string DISPLAY_MODE;
+
         private bool RESIZE;
 
         public UICaretaker(string path)
@@ -42,8 +44,11 @@ namespace UIMono.Core.Caretaker
             components = new List<IComponent>();
             componentsWithTag = new Dictionary<string, IComponent>();
 
-            OLD_WINDOW_WIDTH = GraphicsManager.GraphicsDevice.Viewport.Bounds.Width;
-            OLD_WINDOW_HEIGHT = GraphicsManager.GraphicsDevice.Viewport.Bounds.Height;
+            OLD_WINDOW_WIDTH = GraphicsManager.GraphicsDevice.PresentationParameters.BackBufferWidth;
+            OLD_WINDOW_HEIGHT = GraphicsManager.GraphicsDevice.PresentationParameters.BackBufferHeight;
+
+
+            DISPLAY_MODE = GraphicsManager.GraphicsAdapter.CurrentDisplayMode.ToString();
             
             this.ReadFile();
             this.SetUI();
@@ -99,6 +104,11 @@ namespace UIMono.Core.Caretaker
                 panel.GenerateSurface((int)componentJson.size[0], (int)componentJson.size[1]);
             }
 
+            if(parent != null)
+            {
+                panel.Parent = parent;
+            }
+
             if(componentJson.padding != null)
             {
                 panel.Padding = new Vector4(componentJson.padding[0], componentJson.padding[1], componentJson.padding[2], componentJson.padding[3]); 
@@ -152,6 +162,7 @@ namespace UIMono.Core.Caretaker
 
         public void Update()
         {
+            CheckDisplayName();
             CheckDimension();
 
             foreach (var component in components)
@@ -165,34 +176,45 @@ namespace UIMono.Core.Caretaker
 
         private void CheckDimension()
         {
-            if (OLD_WINDOW_WIDTH != GraphicsManager.GraphicsDevice.Viewport.Bounds.Width)
+            if (OLD_WINDOW_WIDTH != GraphicsManager.GraphicsDevice.PresentationParameters.BackBufferWidth)
             {
-                OLD_WINDOW_WIDTH = GraphicsManager.GraphicsDevice.Viewport.Bounds.Width;
+                OLD_WINDOW_WIDTH = GraphicsManager.GraphicsDevice.PresentationParameters.BackBufferWidth;
 
                 RESIZE = true;
             }
-            if (OLD_WINDOW_HEIGHT != GraphicsManager.GraphicsDevice.Viewport.Bounds.Height)
+            if (OLD_WINDOW_HEIGHT != GraphicsManager.GraphicsDevice.PresentationParameters.BackBufferHeight)
             {
-                OLD_WINDOW_HEIGHT = GraphicsManager.GraphicsDevice.Viewport.Bounds.Height;
+                OLD_WINDOW_HEIGHT = GraphicsManager.GraphicsDevice.PresentationParameters.BackBufferHeight;
 
                 RESIZE = true;
+            }
+        }
+
+        private void CheckDisplayName()
+        {
+            if (DISPLAY_MODE != GraphicsManager.GraphicsAdapter.CurrentDisplayMode.ToString())
+            {
+                DISPLAY_MODE = GraphicsManager.GraphicsAdapter.CurrentDisplayMode.ToString();
+
+                DisplayMode displayMode = GraphicsManager.GraphicsAdapter.CurrentDisplayMode;
+
+                GraphicsManager.GraphicsDeviceManager.PreferredBackBufferWidth = displayMode.Width;
+                GraphicsManager.GraphicsDeviceManager.PreferredBackBufferHeight = displayMode.Height;
+                GraphicsManager.GraphicsDeviceManager.ApplyChanges();
             }
         }
 
 
         public void Render(SpriteBatch batch)
         {
-            batch.Begin(GraphicsManager.SpriteSortMode, GraphicsManager.BlendState);
 
-            foreach(var component in components)
+            foreach (var component in components)
             {
                 if(!component.HasParent)
                 {
                     component.Draw(batch);
                 }
             }
-
-            batch.End();
         }
     }
 }

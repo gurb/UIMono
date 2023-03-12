@@ -14,6 +14,8 @@ namespace UIMono.Core.Components
     {
         public PanelType PanelType { get; set; } = PanelType.Vertical;
 
+        public Viewport Viewport { get; set; }
+
         public bool StretchChildren { get; set; } = false;
         public bool IsResponsive { get; set; } = true;
         public Vector2 MinSize { get; set; }

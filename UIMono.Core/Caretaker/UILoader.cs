@@ -17,10 +17,13 @@ namespace UIMono.Core.Caretaker
         private GraphicsDevice device { get; set; }
         private GameWindow window { get; set; }
 
-        public UILoader(string path, SpriteBatch batch, GraphicsDevice device, GameWindow window)
+        public UILoader(string path, SpriteBatch batch, GraphicsDevice device, GameWindow window, Viewport viewport, GraphicsAdapter adapter, GraphicsDeviceManager graphics)
         {
             GraphicsManager.GraphicsDevice = device;
             WindowManager.Window = window;
+            GraphicsManager.DefaultViewport = viewport;
+            GraphicsManager.GraphicsAdapter = adapter;
+            GraphicsManager.GraphicsDeviceManager = graphics;
             this.batch = batch;
             this.device = device;
 
